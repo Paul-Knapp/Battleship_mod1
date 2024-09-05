@@ -18,8 +18,10 @@ RSpec.describe Ship do
         it 'has a length' do
             expect(@ship1.length).to eq (3)
         end
-       
 
-       
+        it 'has health' do
+            expect(@ship1.health).to eq (3)
+            expect(@ship1.health).to eq (@ship.length)
+        end
     end
 end
