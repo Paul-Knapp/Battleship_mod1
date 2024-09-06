@@ -1,21 +1,43 @@
 class Cell
-    attr_reader :coordinate, :ship, :fired_upon?
+    attr_reader :coordinate
+    attr_accessor :ship
     def initialize(coordinate)
         @coordinate = coordinate
-        ships = []
-        ship = ships[0]
-        fired_upon? = false
+        @ship = nil
+        @fired_upon = false
+    end
+
+    def fired_upon?
+        @fired_upon
     end
 
     def place_ship(type)
-        ships << type
+        @ship = type
     end
 
     def empty?
-        ships.length == 0
+        @ship == nil
     end
 
     def fire_upon
-        fired_upon? = true
+        @fired_upon = true
+    end
+
+    def render(on_off = false)
+        if @ship == nil && @fired_upon == true
+            "M"
+        elsif @ship == nil && @fired_upon == false
+            "."
+        elsif @ship != nil && @fired_upon == false
+            if on_off == false
+                "."
+            else
+                "S"
+            end
+        elsif @ship != nil && @fired_upon == true && @ship.sunk? == false
+                "H"
+        elsif @ship.sunk? == true
+                "X"
+        end
     end
 end
