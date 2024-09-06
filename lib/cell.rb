@@ -9,4 +9,8 @@ class Cell
     def place_ship(type)
         ships << type
     end
+
+    def empty?
+        ships.length == 0
+    end
 end
