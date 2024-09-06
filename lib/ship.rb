@@ -14,4 +14,8 @@ class Ship
 
     @health
   end
+
+  def sunk?
+    @sunk
+  end
 end
