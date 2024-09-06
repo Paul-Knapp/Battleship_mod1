@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 RSpec.describe Cell do
-  it 'exists' do
-    expect(@cell).to be_instance_of(Cell)
-  end
-
   before(:each) do
     @cell = Cell.new('B4')
     @cruiser = Ship.new('Cruiser', 3)
+  end
+
+  it 'exists' do
+    expect(@cell).to be_instance_of(Cell)
   end
 
   describe '#initialize' do
