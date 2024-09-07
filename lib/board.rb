@@ -1,7 +1,22 @@
 class Board
   attr_reader :cells
 
+  # this is a programmatic way to initialize.
+  # avoids hard-coding and makes it easier to change
+  # the board size (iteration 4).
   def initialize
+    @cells = {}
+    ('A'..'D').each do |letter|
+      (1..4).each do |number|
+        cell_name = "#{letter}#{number}"
+        @cells[cell_name.downcase.to_sym] = Cell.new(cell_name)
+      end
+    end
+  end
+
+  # this was the original initialize.
+  # Leaving it here for now.
+  def initialize2
     @cells = {
       a1: Cell.new('A1'),
       a2: Cell.new('A2'),
