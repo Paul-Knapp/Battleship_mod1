@@ -1,14 +1,12 @@
 class Board
   attr_reader :cells
   def initialize
-    @all_coordinates = []
     @cells = {}
     ('A'..'D').each do |letter|
       (1..4).each do |number|
         cell_name = "#{letter}#{number}"
         # we could avoid .downcase if we name our
         # cells A1 instead of a1
-        @all_coordinates << cell_name 
         @cells[cell_name.downcase.to_sym] = Cell.new(cell_name)
         
       end
@@ -85,7 +83,9 @@ class Board
     end
   end
 
-  def place(ship_type, [coordinates])
-    
+  def place(ship_instance, coordinates)
+    @cells.each do |cell|
+
+    end
   end
 end
