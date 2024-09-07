@@ -1,5 +1,5 @@
 class Board
-  attr_reader :cells
+  attr_accessor :cells
   def initialize
     @cells = {}
     ('A'..'D').each do |letter|
@@ -8,9 +8,10 @@ class Board
         # we could avoid .downcase if we name our
         # cells A1 instead of a1
         @cells[cell_name.downcase.to_sym] = Cell.new(cell_name)
-        
+         
       end
     end
+    @cells = cells
   end
 
   def valid_coordinate?(input_coordinate)
@@ -76,7 +77,7 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    if diagonal?(coordinates)  || not_consecutive?(ship, coordinates) || incorrect_length?(ship, coordinates) || overlapping_placement?
+    if diagonal?(coordinates)  || not_consecutive?(ship, coordinates) || incorrect_length?(ship, coordinates) #|| overlapping_placement?
       false
     else
       true
@@ -84,8 +85,10 @@ class Board
   end
 
   def place(ship_instance, coordinates)
-    @cells.each do |cell|
+    return false unless valid_placement?(ship_instance, coordinates)
 
+    @cells.each do |coordinate|
+      @cells[coordinate].place_ship(ship_instance)
     end
   end
 end
