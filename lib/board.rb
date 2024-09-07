@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :cells
+  attr_accessor :cells, :occupied_coordinates
 
   def initialize
     @cells = {}
@@ -12,6 +12,7 @@ class Board
       end
     end
     @cells = cells
+    @occupied_coordinates = []
   end
 
   def valid_coordinate?(input_coordinate)
@@ -24,15 +25,11 @@ class Board
   end
 
   def get_columns(coordinates)
-    # accepts an array of coordinates
-    # returns an array of unique columns ('1', '2', etc..)
     columns = coordinates.map { |coordinate| coordinate[1] }
     columns.uniq
   end
 
   def get_rows(coordinates)
-    # accepts an array of coordinates
-    # returns an array of unique rows ('A', 'B', etc..)
     rows = coordinates.map { |coordinate| coordinate[0] }
     rows.uniq
   end
@@ -53,13 +50,10 @@ class Board
 
     columns = get_columns(coordinates)
     rows = get_rows(coordinates)
-    if rows.uniq.size == 1
-      # the above row skips the below code if the coordinates share a row
+
+    if rows.uniq.size == 1 # horizontal placement
       !columns.map(&:to_i).each_cons(2).all? { |a, b| b == a + 1 }
-      # the &:to_i converts converts the value to a callable object and then turns the symbol into an integer.
-      # looks at all columns and determines if they column b is next to a
-      # uses the bang operator because we are trying to return a true if consecutive is false.
-    elsif columns.uniq.size == 1
+    elsif columns.uniq.size == 1 # vertical placement
       !rows.map(&:to_i).each_cons(2).all? { |a, b| b.ord == a.ord + 1 }
     else
       true
@@ -76,8 +70,18 @@ class Board
     end
   end
 
+  def overlapping_placement?(coordinates)
+    coordinates_to_check = @occupied_coordinates & coordinates
+    if coordinates_to_check.any?
+      true
+    else
+      false
+    end
+  end
+
   def valid_placement?(ship, coordinates)
-    if diagonal?(coordinates) || not_consecutive?(ship, coordinates) || incorrect_length?(ship, coordinates) # || overlapping_placement?
+    if diagonal?(coordinates) || not_consecutive?(ship, coordinates) ||
+       incorrect_length?(ship, coordinates) || overlapping_placement?(coordinates)
       false
     else
       true
@@ -87,16 +91,16 @@ class Board
   def place(ship, coordinates)
     return false unless valid_placement?(ship, coordinates)
 
-    # place ship on each of coordinates
-    # @cells[:a1]
     lowercased_coordinates = coordinates.map(&:downcase)
     symbol_coordinates = lowercased_coordinates.map(&:to_sym)
-    # from Eric - works up to here:
-    # @cells[symbol_coordinates.first].place_ship(ship)
-    symbol_coordinates.each do |place_ship_at|
-      @cells[place_ship_at].place_ship(ship)
+
+    coordinates.each do |coordinate|
+      @occupied_coordinates << coordinate
     end
 
-    # binding.pry
+    symbol_coordinates.each do |symbol_coordinate|
+      @cells[symbol_coordinate].place_ship(ship)
+      # @occupied_coordinates << symbol_coordinate
+    end
   end
 end
