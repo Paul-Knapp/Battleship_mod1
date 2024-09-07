@@ -5,6 +5,8 @@ RSpec.describe Board do
     @board1 = Board.new
     @cruiser = Ship.new('Cruiser', 3)
     @submarine = Ship.new('Cruiser', 2)
+    @cell1 = @board1.cells['A1']
+    @cell2 = @board1.cells['A2']
   end
 
   describe '#initialize' do
@@ -35,11 +37,6 @@ RSpec.describe Board do
       expect(@board1.valid_placement?(@submarine, %w[B1 B2])).to eq(true)
     end
 
-    it 'can determine overlapping placement' do
-      expect(@board1.valid_placement?(@cruiser, %w[A1 A2 A3])).to eq(true)
-      expect(@board1.valid_placement?(@submarine, %w[A1 A2])).to eq(false)
-    end
-
     it 'can determine diagonal placement' do
       expect(@board1.valid_placement?(@cruiser, %w[A1 B2 C3])).to eq(false)
       expect(@board1.valid_placement?(@submarine, %w[B3 A2])).to eq(false)
@@ -53,6 +50,21 @@ RSpec.describe Board do
     it 'can determine if placement isnt on the board' do
       expect(@board1.valid_placement?(@cruiser, %w[A5 A6 A7])).to eq(true)
       expect(@board1.valid_placement?(@submarine, %w[B12 B13])).to eq(true)
+    end
+  end
+
+  describe '#it can place ships' do
+    it 'can place a ship on the board' do
+      @board1.place(cruiser, ["A1", "A2", "A3"])
+      expect(cell1.ship).to be_an_instance_of(Ship)
+      expect(cell2.ship).to be_an_instance_of(Ship)
+      expect(cell1.ship).to eq(cell2.ship)
+    end
+
+    it 'can determine overlapping placement' do
+      expect(@board1.valid_placement?(@cruiser, %w[A1 A2 A3])).to eq(true)
+      @board1.place(@cruiser, ["A1", "A2", "A3"])
+      expect(@board1.valid_placement?(@submarine, %w[A1 A2])).to eq(false)
     end
   end
 end
