@@ -1,5 +1,6 @@
 class Board
   attr_reader :cells
+
   def initialize
     @cells = {
       a1: Cell.new('A1'),
@@ -20,13 +21,16 @@ class Board
       d1: Cell.new('D1'),
       d2: Cell.new('D2'),
       d3: Cell.new('D3'),
-      d4: Cell.new('D4')}
+      d4: Cell.new('D4')
+    }
   end
 
-  def valid_coordinate?(coordinate)
-    @cells.find do |name,cell|
-      binding.pry
-      name.upcase
+  def valid_coordinate?(input_coordinate)
+    @cells.each do |cell|
+      cell_coordinate = cell[1].coordinate
+
+      return true if cell_coordinate == input_coordinate
     end
+    false # did not find a valid coordinate
   end
 end
