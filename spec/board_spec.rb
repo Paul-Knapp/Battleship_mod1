@@ -56,9 +56,9 @@ RSpec.describe Board do
   describe '#it can place ships' do
     it 'can place a ship on the board' do
       @board1.place(@cruiser, %w[A1 A2 A3])
-      expect(@board1.cell1.ship).to be_an_instance_of(Ship)
-      expect(@board1.cell2.ship).to be_an_instance_of(Ship)
-      expect(@cell1.ship).to eq(cell2.ship)
+      expect(@board1.cells[:a1].ship).to be_an_instance_of(Ship)
+      expect(@board1.cells[:a2].ship).to be_an_instance_of(Ship)
+      expect(@board1.cells[:a2].ship).to eq(@cruiser)
     end
 
     it 'can determine overlapping placement' do
