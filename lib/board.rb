@@ -9,6 +9,8 @@ class Board
     ('A'..'D').each do |letter|
       (1..4).each do |number|
         cell_name = "#{letter}#{number}"
+        # we could avoid .downcase if we name our
+        # cells A1 instead of a1
         @cells[cell_name.downcase.to_sym] = Cell.new(cell_name)
       end
     end
@@ -47,5 +49,46 @@ class Board
       return true if cell_coordinate == input_coordinate
     end
     false # did not find a valid coordinate
+  end
+
+  def get_columns(coordinates)
+    # accepts an array of coordinates
+    # returns an array of unique columns ('1', '2', etc..)
+    columns = coordinates.map { |coordinate| coordinate[1] }
+    columns.uniq
+  end
+
+  def get_rows(coordinates)
+    # accepts an array of coordinates
+    # returns an array of unique rows ('A', 'B', etc..)
+    rows = coordinates.map { |coordinate| coordinate[0] }
+    rows.uniq
+  end
+
+  def diagonal?(coordinates)
+    num_rows = get_rows(coordinates).length
+    num_columns = get_columns(coordinates).length
+
+    if num_rows == 1 || num_columns == 1
+      false
+    else
+      true
+    end
+  end
+
+  def not_consecutive?(coordinates)
+    # todo
+  end
+
+  def incorrect_length?(ship, coordinates)
+    # todo
+  end
+
+  def valid_placement?(ship, coordinates)
+    if diagonal?(coordinates) # || not_consecutive?(coordinates) || incorrect_length?(ship, coordinates)
+      false
+    else
+      true
+    end
   end
 end
