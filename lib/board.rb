@@ -5,13 +5,16 @@ class Board
   # avoids hard-coding and makes it easier to change
   # the board size (iteration 4).
   def initialize
+    @all_coordinates = []
     @cells = {}
     ('A'..'D').each do |letter|
       (1..4).each do |number|
         cell_name = "#{letter}#{number}"
         # we could avoid .downcase if we name our
         # cells A1 instead of a1
+        @all_coordinates << cell_name 
         @cells[cell_name.downcase.to_sym] = Cell.new(cell_name)
+        
       end
     end
   end
@@ -77,8 +80,20 @@ class Board
   end
 
   def not_consecutive?(ship, coordinates)
-    return false if coordinates.empty? || coordinates.size == 1
-    sorted.each_cons(2)
+    return true if coordinates.size <= 1
+    columns = get_columns(coordinates)
+    rows = get_rows(coordinates)
+    if rows.uniq.size == 1
+      # the above row skips the below code if the coordinates share a row
+      !columns.map(&:to_i).each_cons(2).all? { |a,b| b == a + 1}
+      # the &:to_i converts converts the value to a callable object and then turns the symbol into an integer.
+      #looks at all columns and determines if they column b is next to a
+      #uses the bang operator because we are trying to return a true if consecutive is false.
+    elsif columns.uniq.size == 1
+      !rows.map(&:to_i).each_cons(2).all? { |a,b| b.ord == a.ord + 1}
+    else
+      true
+    end
 
   end
 
