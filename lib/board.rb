@@ -107,7 +107,8 @@ class Board
   end
 
   def render_header
-    # TODO: render_header
+    print ' '
+    puts columns_array.join(' ')
   end
 
   def render_row(row, on_off)
@@ -116,6 +117,7 @@ class Board
       cell_key = "#{row}#{position}"
       grid << @cells[cell_key].render(on_off)
     end
+    print "#{row} "
     puts grid.join(' ')
   end
 
