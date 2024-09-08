@@ -10,8 +10,8 @@ class Board
     @occupied_coordinates = []
     @cells = {}
 
-    ('A'..@max_row_ordinal.chr).each do |row|
-      (1..@grid_size).each do |column|
+    rows_array.each do |row|
+      columns_array.each do |column|
         cell_key = "#{row}#{column}"
         @cells[cell_key] = Cell.new(cell_key)
       end
@@ -98,13 +98,21 @@ class Board
     end
   end
 
+  def columns_array
+    (1..@grid_size).to_a
+  end
+
+  def rows_array
+    ('A'..@max_row_ordinal.chr).to_a
+  end
+
   def render_header
     # TODO: render_header
   end
 
   def render_row(row, on_off)
     grid = []
-    (1..@grid_size).each do |position|
+    columns_array.each do |position|
       cell_key = "#{row}#{position}"
       grid << @cells[cell_key].render(on_off)
     end
@@ -114,8 +122,7 @@ class Board
   def render(on_off = false)
     render_header
 
-    range = 'A'..@max_row_ordinal.chr
-    range.to_a.each do |row|
+    rows_array.each do |row|
       render_row(row, on_off)
     end
   end
