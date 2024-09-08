@@ -91,16 +91,12 @@ class Board
   def place(ship, coordinates)
     return false unless valid_placement?(ship, coordinates)
 
-    # lowercased_coordinates = coordinates.map(&:downcase)
-    # symbol_coordinates = lowercased_coordinates.map(&:to_sym)
-
     coordinates.each do |coordinate|
       @occupied_coordinates << coordinate
     end
 
     coordinates.each do |coordinate|
       @cells[coordinate].place_ship(ship)
-      # @occupied_coordinates << symbol_coordinate
     end
   end
 end
