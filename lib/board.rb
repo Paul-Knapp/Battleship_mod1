@@ -23,24 +23,23 @@ class Board
   end
 
   def get_columns(coordinates)
-    columns = coordinates.map { |coordinate| coordinate[1] }
-    columns.uniq
+    coordinates.map { |coordinate| coordinate[1] }.uniq
   end
 
   def get_rows(coordinates)
-    rows = coordinates.map { |coordinate| coordinate[0] }
-    rows.uniq
+    coordinates.map { |coordinate| coordinate[0] }.uniq
+  end
+
+  def horizontal?(coordinates)
+    get_rows(coordinates).length == 1
+  end
+
+  def vertical?(coordinates)
+    get_columns(coordinates).length == 1
   end
 
   def diagonal?(coordinates)
-    num_rows = get_rows(coordinates).length
-    num_columns = get_columns(coordinates).length
-
-    if num_rows == 1 || num_columns == 1
-      false
-    else
-      true
-    end
+    horizontal?(coordinates) || vertical?(coordinates) ? false : true
   end
 
   def not_consecutive?(ship, coordinates)
@@ -49,9 +48,9 @@ class Board
     columns = get_columns(coordinates)
     rows = get_rows(coordinates)
 
-    if rows.size == 1 # horizontal placement
+    if horizontal?(coordinates)
       !columns.map(&:to_i).each_cons(2).all? { |a, b| b == a + 1 }
-    elsif columns.size == 1 # vertical placement
+    elsif vertical?(coordinates)
       !rows.map(&:to_i).each_cons(2).all? { |a, b| b.ord == a.ord + 1 }
     else
       true
@@ -113,6 +112,7 @@ class Board
 
   def render_row(row, on_off)
     grid = []
+
     columns_array.each do |position|
       cell_key = "#{row}#{position}"
       grid << @cells[cell_key].render(on_off)
