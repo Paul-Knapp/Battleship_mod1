@@ -16,7 +16,7 @@ RSpec.describe Board do
 
     it 'has 16 cells' do
       expect(@board1.cells.length).to eq(16)
-      expect(@board1.cells[:a1]).to be_an_instance_of(Cell)
+      expect(@board1.cells['A1']).to be_an_instance_of(Cell)
     end
   end
 
@@ -56,9 +56,9 @@ RSpec.describe Board do
   describe '#it can place ships' do
     it 'can place a ship on the board' do
       @board1.place(@cruiser, %w[A1 A2 A3])
-      expect(@board1.cells[:a1].ship).to be_an_instance_of(Ship)
-      expect(@board1.cells[:a2].ship).to be_an_instance_of(Ship)
-      expect(@board1.cells[:a2].ship).to eq(@cruiser)
+      expect(@board1.cells['A1'].ship).to be_an_instance_of(Ship)
+      expect(@board1.cells['A2'].ship).to be_an_instance_of(Ship)
+      expect(@board1.cells['A3'].ship).to eq(@cruiser)
     end
 
     it 'can determine overlapping placement' do

@@ -1,3 +1,5 @@
+require './lib/cell'
+
 class Board
   attr_accessor :cells, :occupied_coordinates
 
@@ -6,9 +8,7 @@ class Board
     ('A'..'D').each do |letter|
       (1..4).each do |number|
         cell_name = "#{letter}#{number}"
-        # we could avoid .downcase if we name our
-        # cells A1 instead of a1
-        @cells[cell_name.downcase.to_sym] = Cell.new(cell_name)
+        @cells[cell_name] = Cell.new(cell_name)
       end
     end
     @cells = cells
@@ -91,15 +91,15 @@ class Board
   def place(ship, coordinates)
     return false unless valid_placement?(ship, coordinates)
 
-    lowercased_coordinates = coordinates.map(&:downcase)
-    symbol_coordinates = lowercased_coordinates.map(&:to_sym)
+    # lowercased_coordinates = coordinates.map(&:downcase)
+    # symbol_coordinates = lowercased_coordinates.map(&:to_sym)
 
     coordinates.each do |coordinate|
       @occupied_coordinates << coordinate
     end
 
-    symbol_coordinates.each do |symbol_coordinate|
-      @cells[symbol_coordinate].place_ship(ship)
+    coordinates.each do |coordinate|
+      @cells[coordinate].place_ship(ship)
       # @occupied_coordinates << symbol_coordinate
     end
   end
