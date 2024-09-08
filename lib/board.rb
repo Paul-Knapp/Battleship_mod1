@@ -51,9 +51,9 @@ class Board
     columns = get_columns(coordinates)
     rows = get_rows(coordinates)
 
-    if rows.uniq.size == 1 # horizontal placement
+    if rows.size == 1 # horizontal placement
       !columns.map(&:to_i).each_cons(2).all? { |a, b| b == a + 1 }
-    elsif columns.uniq.size == 1 # vertical placement
+    elsif columns.size == 1 # vertical placement
       !rows.map(&:to_i).each_cons(2).all? { |a, b| b.ord == a.ord + 1 }
     else
       true
