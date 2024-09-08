@@ -48,8 +48,13 @@ RSpec.describe Board do
     end
 
     it 'can determine if placement isnt on the board' do
-      expect(@board1.valid_placement?(@cruiser, %w[A5 A6 A7])).to eq(true)
-      expect(@board1.valid_placement?(@submarine, %w[B12 B13])).to eq(true)
+      expect(@board1.valid_placement?(@cruiser, %w[A5 A6 A7])).to eq(false)
+      expect(@board1.valid_placement?(@submarine, %w[B12 B13])).to eq(false)
+    end
+
+    it 'can determine if the placement is the wrong length' do
+      expect(@board1.valid_placement?(@cruiser, %w[A1 A2 A3 A4])).to be(false)
+      expect(@board1.valid_placement?(@submarine, %w[A1 A2 A3])).to be(false)
     end
   end
 
@@ -66,7 +71,7 @@ RSpec.describe Board do
       @board1.place(@cruiser, %w[A1 A2 A3])
       expect(@board1.valid_placement?(@submarine, %w[A1 A2])).to eq(false)
       @board1.place(@submarine, %w[C1 C2])
-      @board1.render
     end
   end
+
 end
