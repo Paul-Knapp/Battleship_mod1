@@ -65,6 +65,8 @@ RSpec.describe Board do
       expect(@board1.valid_placement?(@cruiser, %w[A1 A2 A3])).to eq(true)
       @board1.place(@cruiser, %w[A1 A2 A3])
       expect(@board1.valid_placement?(@submarine, %w[A1 A2])).to eq(false)
+      @board1.place(@submarine, %w[C1 C2])
+      @board1.render
     end
   end
 end

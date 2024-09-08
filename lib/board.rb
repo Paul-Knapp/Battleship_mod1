@@ -99,4 +99,26 @@ class Board
       @cells[coordinate].place_ship(ship)
     end
   end
+
+  def render_header(max)
+  end
+
+  def render_row(row, max, ships)
+    grid = []
+    (1..max).each do |position|
+      cell_key = "#{row}#{position}"
+      grid << @cells[cell_key].render(ships)
+    end
+    puts grid.join(' ')
+  end
+
+  def render(ships = false)
+    max = 4
+
+    render_header(max)
+    render_row('A', max, true)
+    render_row('B', max, true)
+    render_row('C', max, true)
+    render_row('D', max, true)
+  end
 end
