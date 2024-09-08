@@ -19,7 +19,8 @@ class Board
   end
 
   def valid_coordinate?(input_coordinate)
-    @cells[input_coordinate] ? true : false
+    return false unless input_coordinate.is_a?(String) && input_coordinate.length == 2
+      @cells.keys.include?(input_coordinate.to_s)
   end
 
   def get_columns(coordinates)
@@ -81,7 +82,7 @@ class Board
        incorrect_length?(ship, coordinates) || overlapping_placement?(coordinates)
       false
     else
-      true
+      !!valid_coordinate?(coordinates)
     end
   end
 
