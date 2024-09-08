@@ -18,9 +18,14 @@ class Board
     end
   end
 
-  def valid_coordinate?(input_coordinate)
-    return false unless input_coordinate.is_a?(String) && input_coordinate.length == 2
-      @cells.keys.include?(input_coordinate.to_s)
+  def valid_coordinate?(*input_coordinates)
+    input_coordinates.flatten.all? do |coordinate|
+       if @cells.keys.include?(coordinate) == true
+        true
+       else
+        false
+       end
+      end
   end
 
   def get_columns(coordinates)
@@ -82,12 +87,12 @@ class Board
        incorrect_length?(ship, coordinates) || overlapping_placement?(coordinates)
       false
     else
-      !!valid_coordinate?(coordinates)
+      true
     end
   end
 
   def place(ship, coordinates)
-    return false unless valid_placement?(ship, coordinates)
+    return false unless valid_placement?(ship, coordinates) == true
 
     coordinates.each do |coordinate|
       @occupied_coordinates << coordinate
