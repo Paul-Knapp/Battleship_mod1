@@ -1,24 +1,26 @@
 require './lib/cell'
 
 class Board
-  attr_accessor :cells, :occupied_coordinates
+  attr_accessor :cells
 
-  def initialize
+  def initialize(grid_size = 4)
+    @grid_size = grid_size
+    @max_row_ordinal = 'A'.ord + @grid_size - 1
+
+    @occupied_coordinates = []
     @cells = {}
-    ('A'..'D').each do |letter|
-      (1..4).each do |number|
-        cell_name = "#{letter}#{number}"
-        @cells[cell_name] = Cell.new(cell_name)
+
+    ('A'..@max_row_ordinal.chr).each do |row|
+      (1..@grid_size).each do |column|
+        cell_key = "#{row}#{column}"
+        @cells[cell_key] = Cell.new(cell_key)
       end
     end
-    @cells = cells
-    @occupied_coordinates = []
   end
 
   def valid_coordinate?(input_coordinate)
     @cells.each do |cell|
       cell_coordinate = cell[1].coordinate
-
       return true if cell_coordinate == input_coordinate
     end
     false
@@ -100,25 +102,25 @@ class Board
     end
   end
 
-  def render_header(max)
+  def render_header
+    # TODO: render_header
   end
 
-  def render_row(row, max, ships)
+  def render_row(row, on_off)
     grid = []
-    (1..max).each do |position|
+    (1..@grid_size).each do |position|
       cell_key = "#{row}#{position}"
-      grid << @cells[cell_key].render(ships)
+      grid << @cells[cell_key].render(on_off)
     end
     puts grid.join(' ')
   end
 
-  def render(ships = false)
-    max = 4
+  def render(on_off = false)
+    render_header
 
-    render_header(max)
-    render_row('A', max, true)
-    render_row('B', max, true)
-    render_row('C', max, true)
-    render_row('D', max, true)
+    range = 'A'..@max_row_ordinal.chr
+    range.to_a.each do |row|
+      render_row(row, on_off)
+    end
   end
 end
