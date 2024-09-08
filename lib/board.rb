@@ -19,12 +19,7 @@ class Board
   end
 
   def valid_coordinate?(input_coordinate)
-    # @cells.each do |cell|
-    #  cell_coordinate = cell[1].coordinate
-    #  return true if cell_coordinate == input_coordinate
-    # end
     @cells[input_coordinate] ? true : false
-    # false
   end
 
   def get_columns(coordinates)
