@@ -2,15 +2,23 @@ class Game
     attr_accessor :turns, :player_board, :computer_board
     def initialize
         @turns = []
-        @player_board = board1
-        @computer_board = board2
+        @player_board = Board.new
+        @computer_board = Board.new
     end
 
-    #starts at main menu screen 
-        #p to play if p to self.
-        #q to quit
-
-    #let both both player and computer place ships
+    def start
+        puts "Welcome to BATTLESHIP\n
+            Enter p to play. Enter q to quit."
+        input = gets
+        if input == ('q')
+            self.place_ships
+        elsif input == ('p')
+        end
+    end
+        
+    #player place ships
+    
+    #computer place ships
 
     #take a player guess
         #take turn?
