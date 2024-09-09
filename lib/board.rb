@@ -83,6 +83,7 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
+    binding.pry
     if diagonal?(coordinates) || not_consecutive?(ship, coordinates) ||
        incorrect_length?(ship, coordinates) || overlapping_placement?(coordinates)
       false
