@@ -1,8 +1,9 @@
 class Game 
-    attr_accessor :board, :turns
-    def initialize(board)
+    attr_accessor :turns, :player_board, :computer_board
+    def initialize
         @turns = []
-        @board = board
+        @player_board = board1
+        @computer_board = board2
     end
 
     #starts at main menu screen 
