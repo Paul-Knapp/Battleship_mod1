@@ -97,18 +97,29 @@ RSpec.describe Board do
       @board1.place(@cruiser, %w[A1 A2 A3])
       expect { @board1.render_row('A', false) }.to output("A . . . .\n").to_stdout
       expect { @board1.render_row('A', false) }.to_not output(". . . . .\n").to_stdout
+      @board1.place(@submarine, %w[B1 C1])
+      expect { @board1.render_row('B', false) }.to output("B . . . .\n").to_stdout
+      expect { @board1.render_row('C', false) }.to output("C . . . .\n").to_stdout
     end
 
     it 'can render a miss' do
       @board1.place(@cruiser, %w[A1 A2 A3])
       @board1.cells['A4'].fire_upon
       expect { @board1.render_row('A', false) }.to output("A . . . M\n").to_stdout
+      @board1.place(@submarine, %w[B1 C1])
+      @board1.cells['B2'].fire_upon
+      @board1.cells['C2'].fire_upon
+      expect { @board1.render_row('B', false) }.to output("B . M . .\n").to_stdout
+      expect { @board1.render_row('C', false) }.to output("C . M . .\n").to_stdout
     end
 
     it 'can render a hit' do
       @board1.place(@cruiser, %w[A1 A2 A3])
       @board1.cells['A1'].fire_upon
       expect { @board1.render_row('A', false) }.to output("A H . . .\n").to_stdout
+      @board1.place(@submarine, %w[B1 C1])
+      @board1.cells['B1'].fire_upon
+      expect { @board1.render_row('B', false) }.to output("B H . . .\n").to_stdout
     end
 
     it 'can render a sink' do
