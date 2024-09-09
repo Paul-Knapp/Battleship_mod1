@@ -4,6 +4,7 @@ class Game
         @turns = []
         @player_board = Board.new
         @computer_board = Board.new
+        cruiser 
     end
 
     def start
@@ -16,7 +17,15 @@ class Game
         end
     end
         
-    #player place ships
+    def place_ships
+        #computer places ships
+        p "I have laid out my ships on the grid.\n
+            You now need to lay out your two ships.\n
+The Cruiser is three units long and the Submarine is two units long.\n
+        +#{@player_board.render}
+        Enter the squares for the Cruiser (3 spaces):"
+        @player_board.place_ship(cruiser[gets])
+    end
     
     #computer place ships
 
