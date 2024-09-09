@@ -25,10 +25,10 @@ The Cruiser is three units long and the Submarine is two units long.\n
         +#{@player_board.render}
         Enter the squares for the Cruiser (3 spaces):"
         @player_board.place_ship(cruiser[gets])
+        p "Enter the squares for the Submarine (2 spaces):"
+        @player_board.place_ship(submarine[gets])
     end
     
-    #computer place ships
-
     #take a player guess
         #take turn?
         #tell you to try again if you already guessed the coordinate
