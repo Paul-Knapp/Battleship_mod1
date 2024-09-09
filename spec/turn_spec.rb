@@ -2,8 +2,8 @@ require 'spec_helper'
 
 RSpec.describe Turn do
     before(:each) do
-    @turn = Turn.new('A1')
     @board1 = Board.new
+    @turn = Turn.new('A1', @board1)
     @cruiser = Ship.new('Cruiser', 3)
     @submarine = Ship.new('Submarine', 2)
     @cell1 = @board1.cells['A1']
