@@ -57,7 +57,7 @@ class Board
     if horizontal?(coordinates)
       !columns.map(&:to_i).each_cons(2).all? { |a, b| b == a + 1 }
     elsif vertical?(coordinates)
-      !rows.map(&:to_i).each_cons(2).all? { |a, b| b.ord == a.ord + 1 }
+      !rows.map(&:ord).each_cons(2).all? { |a, b| b == a + 1 }
     else
       true
     end
@@ -91,14 +91,16 @@ class Board
   end
 
   def place(ship, coordinates)
-    return false unless valid_placement?(ship, coordinates) == true
-
-    coordinates.each do |coordinate|
-      @occupied_coordinates << coordinate
-    end
-
-    coordinates.each do |coordinate|
-      @cells[coordinate].place_ship(ship)
+    if valid_placement?(ship, coordinates) == true
+      coordinates.each do |coordinate|
+        @occupied_coordinates << coordinate
+      end
+  
+      coordinates.each do |coordinate|
+        @cells[coordinate].place_ship(ship)
+      end
+    else 
+      false
     end
   end
 
