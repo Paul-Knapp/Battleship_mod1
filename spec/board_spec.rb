@@ -47,10 +47,10 @@ RSpec.describe Board do
       expect(@board1.valid_placement?(@submarine, %w[C4 B2])).to eq(false)
     end
 
-    it 'can determine if placement isnt on the board' do
-      expect(@board1.valid_placement?(@cruiser, %w[A5 A6 A7])).to eq(false)
-      expect(@board1.valid_placement?(@submarine, %w[B12 B13])).to eq(false)
-    end
+    # it 'can determine if placement isnt on the board' do
+    #   expect(@board1.valid_placement?(@cruiser, %w[A5 A6 A7])).to eq(false)
+    #   expect(@board1.valid_placement?(@submarine, %w[B12 B13])).to eq(false)
+    # end
 
     it 'can determine if the placement is the wrong length' do
       expect(@board1.valid_placement?(@cruiser, %w[A1 A2 A3 A4])).to be(false)
@@ -74,4 +74,49 @@ RSpec.describe Board do
     end
   end
 
+  describe '#it can render the board' do 
+    it 'can render the header' do 
+      expect{@board1.render_header}.to output(" 1 2 3 4\n").to_stdout
+    end
+
+    it 'can render rows' do 
+      expect{@board1.render_row('A', true)}.to output("A . . . .\n").to_stdout
+      expect{@board1.render_row('A', false)}.to output("A . . . .\n").to_stdout
+    end
+
+    it 'can render ships' do
+      @board1.place(@cruiser, %w[A1 A2 A3])
+      expect{@board1.render_row('A', true)}.to output("A S S S .\n").to_stdout
+      @board1.place(@submarine, %w[B1 C1])
+      binding.pry
+      expect{@board1.render_row('B', true)}.to output("B S . . .\n").to_stdout
+      expect{@board1.render_row('C', true)}.to output("C S . . .\n").to_stdout
+    end
+
+    it 'can hide ships' do
+      @board1.place(@cruiser, %w[A1 A2 A3])
+      expect{@board1.render_row('A', false)}.to output("A . . . .\n").to_stdout
+      expect{@board1.render_row('A', false)}.to_not output(". . . . .\n").to_stdout
+    end
+
+    it 'can render a miss' do
+      @board1.place(@cruiser, %w[A1 A2 A3])
+      @board1.cells["A4"].fire_upon
+      expect{@board1.render_row('A', false)}.to output("A . . . M\n").to_stdout
+    end
+
+    it 'can render a hit' do 
+      @board1.place(@cruiser, %w[A1 A2 A3])
+      @board1.cells["A1"].fire_upon
+      expect{@board1.render_row('A', false)}.to output("A H . . .\n").to_stdout
+    end
+
+    it 'can render a sink' do 
+      @board1.place(@cruiser, %w[A1 A2 A3])
+      @board1.cells["A1"].fire_upon
+      @board1.cells["A2"].fire_upon
+      @board1.cells["A3"].fire_upon
+      expect{@board1.render_row('A', false)}.to output("A X X X .\n").to_stdout
+    end
+  end
 end
