@@ -4,7 +4,8 @@ class Game
         @turns = []
         @player_board = Board.new
         @computer_board = Board.new
-        cruiser 
+        @cruiser = Ship.new('Cruiser', 3)
+        @submarine = Ship.new('Submarine', 2)
     end
 
     def start
@@ -29,9 +30,13 @@ The Cruiser is three units long and the Submarine is two units long.\n
         @player_board.place_ship(submarine[gets])
     end
     
-    #take a player guess
-        #take turn?
-        #tell you to try again if you already guessed the coordinate
+    def take_turns
+
+    end
+        
+    def end_game?
+        if 
+    end
 
     #take a guess from a computer
 
