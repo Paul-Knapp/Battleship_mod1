@@ -1,6 +1,11 @@
 require 'spec_helper'
-Rspec.describe Game do
-    #it exists
+RSpec.describe Game do
+    before(:each) do
+        game = Game.new
+    end
+    it "#exists" do
+        expect(game).to be_an_instance_of(Game)
+    end
 
     #it has a board
 
@@ -14,7 +19,7 @@ Rspec.describe Game do
 
     #it displays results with every shot taken
 
-    
+
 
 
 end
