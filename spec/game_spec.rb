@@ -7,17 +7,23 @@ RSpec.describe Game do
         expect(game).to be_an_instance_of(Game)
     end
 
-    #it has a board
+    it "#has both boards" do
+        expect(@player_board).to be_an_instance_of(Board)
+        expect(@computer_board).to be_an_instance_of(Board)
+    end
 
-    #it can take a player turn
+    it "#can start a new game" do
+        expect{game.start}.to output(Welcome to BATTLESHIP\n
+        Enter p to play. Enter q to quit.).to_stdout
+    end
 
-    #it can take a computer turn
+        #it can take a computer turn
 
-    # # it knows results
+        # # it knows results
 
-    #it knows that you have already shot at a coordinate
+        #it knows that you have already shot at a coordinate
 
-    #it displays results with every shot taken
+         #it displays results with every shot taken
 
 
 
