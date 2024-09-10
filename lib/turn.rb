@@ -14,10 +14,10 @@ class Turn
   end
 
   def take_turn
-    # User board is displayed showing hits, misses, sunken ships, and ships
+    # User board is displayed showing hits, misses, sunken ships, and ships - done
     @board1.render(true)
 
-    # Computer board is displayed showing hits, misses, and sunken ships
+    # Computer board is displayed showing hits, misses, and sunken ships - done
     @board2.render(true)
   end
 
@@ -34,8 +34,20 @@ class Turn
     target
   end
 
+  def valid_target?(target)
+    @board2.valid_coordinate?(target)
+  end
+
   def user_shot
     # User can choose a valid coordinate to fire on
+    print 'enter target: '
+    target = gets.chomp
+    if valid_target?(target)
+      puts 'target acquired'
+    else
+      puts 'invalid target'
+      user_shot
+    end
     # Entering invalid coordinate prompts user to enter valid coordinate
     # User is informed when they have already fired on a coordinate
   end

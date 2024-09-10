@@ -18,3 +18,9 @@ board2.place(p2s2, %w[D3 D4])
 
 turn = Turn.new('A1', board1, board2)
 turn.take_turn
+turn.computer_shot
+Turn.shots_fired
+
+
+
+
