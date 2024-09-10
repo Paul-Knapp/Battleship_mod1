@@ -1,5 +1,5 @@
 class Turn
-  attr_reader :shot, :board
+  attr_reader :shot, :board, :user_result, :computer_result
 
   @@shots_fired_board1 = []
   @@shots_fired_board2 = []
@@ -12,74 +12,83 @@ class Turn
     @@shots_fired_board2
   end
 
-  def initialize(shot, board1, board2)
-    @shot = shot
+  def initialize(board1, board2)
     @board1 = board1 # User
     @board2 = board2 # Computer
   end
 
-  def take_turn
-    # User board is displayed showing hits, misses, sunken ships, and ships - done
+  def print_boards
     @board1.render(true)
+    puts
 
     # Computer board is displayed showing hits, misses, and sunken ships - done
     @board2.render(true)
+    puts
+  end
+
+  def take_turn
+    print_boards
   end
 
   def random_shot
+    # Computer does not fire on the same spot twice - done
     (@board1.cells.keys - @@shots_fired_board1).sample
   end
 
   def computer_shot
     # Computer chooses a random shot - done
-    # Computer does not fire on the same spot twice - done
     target = random_shot
-    @board1.cells[target].fire_upon
-    @@shots_fired_board1 << target
-    target
+
+    @board1.cells[target].fire_upon && @@shots_fired_board1 << target
+
+    @computer_result = damage_report(@board2, target)
   end
 
   def valid_target?(target)
+    # User is informed when they have already fired on a coordinate - done
     if @board2.cells[target].fired_upon?
       puts 'you already shot there.'
       return false
     end
+
     @board2.valid_coordinate?(target)
   end
 
   def user_shot
-    # User can choose a valid coordinate to fire on - done
     print 'enter target: '
     target = gets.chomp
 
-    # here
-
+    # User can choose a valid coordinate to fire on - done
     unless valid_target?(target)
       puts 'invalid target'
+      # Entering invalid coordinate prompts user to enter valid coordinate - done
       user_shot
     end
 
     @board2.cells[target].fire_upon && @@shots_fired_board2 << target
 
-    # Entering invalid coordinate prompts user to enter valid coordinate - done
-    # User is informed when they have already fired on a coordinate - done
+    @user_result = damage_report(@board1, target)
   end
 
-  def damage_report
-    # Both computer and player shots are reported as a hit, sink, or miss
-    # Board is updated after a turn
+  def damage_report(board, target)
+    ship = board.cells[target].ship
+
+    result = if ship
+               'hit'
+             else
+               'miss'
+             end
+
+    result = 'sunk' if ship && ship.sunk?
+
+    result
   end
 
-  def is_a_hit
-    !@board.cells[shot].ship.nil?
-  end
-
-  def feedback
-    if is_a_hit
-      "your shot on #{shot} was a hit"
-    elsif is_a_hit
-      "your shot on #{shot} was a miss"
-    end
+  def result
+    puts "User result: #{@user_result}"
+    puts "Computer result: #{@computer_result}"
+    puts
+    print_boards
   end
 end
 

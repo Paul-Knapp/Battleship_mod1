@@ -16,13 +16,9 @@ board2.place(p2s1, %w[C1 C2 C3])
 board2.place(p2s2, %w[D3 D4])
 
 
-turn = Turn.new('A1', board1, board2)
+turn = Turn.new(board1, board2)
 turn.take_turn
 turn.computer_shot
 Turn.shots_fired_board1
 turn.user_shot
 Turn.shots_fired_board2
-
-
-
-
