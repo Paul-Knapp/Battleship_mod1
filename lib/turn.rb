@@ -15,18 +15,27 @@ class Turn
   def initialize(board1, board2)
     @board1 = board1 # User
     @board2 = board2 # Computer
+    @turn_number = 0
   end
 
   def print_boards
+    puts 'Player Board:'
     @board1.render(true)
     puts
 
     # Computer board is displayed showing hits, misses, and sunken ships - done
-    @board2.render(true)
+    puts 'Computer Board:'
+    @board2.render(false)
     puts
   end
 
   def take_turn
+    # system('clear') # Clear the terminal
+    @turn_number += 1
+    puts
+    puts '*' * 7 + " turn number: #{@turn_number} " + '*' * 7
+    puts
+
     print_boards
     computer_shot
     user_shot
@@ -45,17 +54,17 @@ class Turn
 
     @board1.cells[target].fire_upon && @@shots_fired_board1 << target
 
-    @computer_result = damage_report(@board2, target)
+    @computer_result = "#{target}: " + damage_report(@board1, target)
   end
 
   def valid_target?(target)
-    # User is informed when they have already fired on a coordinate - done
-    if @board2.cells[target].fired_upon?
-      puts 'you already shot there.'
-      return false
-    end
+    return false unless @board2.valid_coordinate?(target)
 
-    @board2.valid_coordinate?(target)
+    # User is informed when they have already fired on a coordinate - done
+    return true unless @board2.cells[target].fired_upon?
+
+    puts 'you already shot there.'
+    false
   end
 
   def user_shot
@@ -66,12 +75,12 @@ class Turn
     unless valid_target?(target)
       puts 'invalid target'
       # Entering invalid coordinate prompts user to enter valid coordinate - done
-      user_shot
+      return user_shot
     end
 
     @board2.cells[target].fire_upon && @@shots_fired_board2 << target
 
-    @user_result = damage_report(@board1, target)
+    @user_result = "#{target}: " + damage_report(@board2, target)
   end
 
   def damage_report(board, target)
@@ -83,7 +92,7 @@ class Turn
                'miss'
              end
 
-    result = 'sunk' if ship && ship.sunk?
+    result = "sunk #{ship.name}" if ship && ship.sunk?
 
     result
   end
@@ -92,7 +101,5 @@ class Turn
     puts "User result: #{@user_result}"
     puts "Computer result: #{@computer_result}"
     puts
-    print_boards
   end
 end
-
