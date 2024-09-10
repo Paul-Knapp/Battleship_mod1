@@ -3,8 +3,8 @@ class Turn
 
   def initialize(shot, board1, board2)
     @shot = shot
-    @board1 = board1
-    @board2 = board2
+    @board1 = board1 # User
+    @board2 = board2 # Computer
   end
 
   def take_turn
