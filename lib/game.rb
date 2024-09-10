@@ -2,8 +2,6 @@ class Game
     attr_accessor :turns, :player_board, :computer_board
     def initialize
         @turns = []
-        @player_board = Board.new
-        @computer_board = Board.new
         @cruiser = Ship.new('Cruiser', 3)
         @submarine = Ship.new('Submarine', 2)
     end
@@ -33,12 +31,14 @@ The Cruiser is three units long and the Submarine is two units long.\n
        end
     end
     
-    def take_turns
+    def 
 
     end
         
     def end_game?
-        #end game once one sides ships are all sunk
+        if @turn.board1.cells[1].each do |cell|
+            if cell 
+        end
     end
 
     #take a guess from a computer
