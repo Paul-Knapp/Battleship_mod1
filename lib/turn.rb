@@ -86,15 +86,13 @@ class Turn
   def damage_report(board, target)
     ship = board.cells[target].ship
 
-    result = if ship
-               'hit'
-             else
-               'miss'
-             end
-
-    result = "sunk #{ship.name}" if ship && ship.sunk?
-
-    result
+    if ship && ship.sunk?
+      "sunk #{ship.name}"
+    elsif ship
+      'hit'
+    else
+      'miss'
+    end
   end
 
   def result
