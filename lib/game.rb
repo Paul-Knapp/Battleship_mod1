@@ -27,7 +27,10 @@ The Cruiser is three units long and the Submarine is two units long.\n
         Enter the squares for the Cruiser (3 spaces):"
         @player_board.place_ship(cruiser[gets])
         p "Enter the squares for the Submarine (2 spaces):"
-        @player_board.place_ship(submarine[gets])
+       until @player_board.place_ship(submarine[gets]) == true 
+        @player_board.place_ship(submarine[gets]) == true
+       else
+       end
     end
     
     def take_turns
@@ -35,7 +38,7 @@ The Cruiser is three units long and the Submarine is two units long.\n
     end
         
     def end_game?
-        if 
+        #end game once one sides ships are all sunk
     end
 
     #take a guess from a computer
