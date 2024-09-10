@@ -1,10 +1,13 @@
 class Game 
     attr_accessor :turns, :player_board, :computer_board
     def initialize
-        @turns = []
         @cruiser = Ship.new('Cruiser', 3)
         @submarine = Ship.new('Submarine', 2)
-        turn = Turn.new
+        @c_cruiser = Ship.new('Cruiser', 3)
+        @c_submarine = Ship.new('Submarine', 2)
+        @player_board = Board.new
+        @computer_board = Board.new
+        @turn = Turn.new(@player_board ,@computer_board)
     end
 
     def start
@@ -18,17 +21,18 @@ class Game
     end
         
     def place_ships
-        place_ships_randomly(@cruiser)
-        place_ships_randomly(@submarine)
+        place_ships_randomly(@c_cruiser)
+        place_ships_randomly(@c_submarine)
         p "I have laid out my ships on the grid.\n" +
             "You now need to lay out your two ships.\n" +
 "The Cruiser is three units long and the Submarine is two units long.\n"
         +{@turns[0].render}
-        Enter the squares for the Cruiser (3 spaces):"
-        @turns[0].board2.place_ship(cruiser, [gets.chomp.split])
+         p "Enter the squares for the Cruiser (3 spaces):"
+        @player_board.place_ship(@cruiser, [gets.chomp.split])
         p "Enter the squares for the Submarine (2 spaces):"
        until @player_board.place_ship(submarine[gets]) == true 
-        @player_board.place_ship(submarine[gets.chomp.split]) == true
+        @player_board.place_ship(@submarine[gets.chomp.split]) == true
+        play_the_game
        else
        end
     end
@@ -45,10 +49,11 @@ class Game
       end
     
     def place_ships_randomly(ship)
-        turns[0].board2.columns_array = verticle
-        turns[0].board2.rows_array = horizontal(ship)
+        @computer_board.columns_array = verticle
+        @computer_board.rows_array = horizontal(ship)
+            max_attempts = 150 
             attempts = 0
-            max_attempts = 100
+           
           
             while attempts < max_attempts
               start_row = rows_array.sample
@@ -59,7 +64,7 @@ class Game
           
               coordinates = generate_coordinates(start_coordinate, ship.length, orientation)
           
-              if valid_placement?(ship, coordinates)
+              if @computer_board.valid_placement?(ship, coordinates)
                 place(ship, coordinates)
                 return true
               end
@@ -70,8 +75,11 @@ class Game
     end
         
     
-
-    #take a guess from a computer
-
-    #show the board with computer ships hidden
+    def play_the_game
+        @turn.take_turn until
+        {@c_cruiser.sunk? && @c_submarine.sunk?} ||{@cruiser.sunk? && @submarine.sunk?}
+        p "press enter to continue"
+        gets
+        game.start
+    end
 end
