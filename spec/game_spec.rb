@@ -2,6 +2,7 @@ require 'spec_helper'
 RSpec.describe Game do
     before(:each) do
         @game = Game.new
+        @board_1 = Board.new
     end
 
     it "#exists" do
@@ -18,7 +19,7 @@ RSpec.describe Game do
         Enter p to play. Enter q to quit.).to_stdout
     end
 
-        #it can take a computer turn
+    
 
         # # it knows results
 
@@ -28,7 +29,7 @@ RSpec.describe Game do
     
     it  "#can end the game" do
         it 'ends the game when you lose' do 
-
+            
         end
 
         it 'ends the game when you win' do
@@ -40,7 +41,7 @@ RSpec.describe Game do
         end
 
         it 'returns to main menu' do
-            
+
         end
 
 
