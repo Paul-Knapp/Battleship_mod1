@@ -28,6 +28,10 @@ class Turn
 
   def take_turn
     print_boards
+    computer_shot
+    user_shot
+    result
+    print_boards
   end
 
   def random_shot
