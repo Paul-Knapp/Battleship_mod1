@@ -1,10 +1,15 @@
 class Turn
   attr_reader :shot, :board
 
-  @@shots_fired = []
+  @@shots_fired_board1 = []
+  @@shots_fired_board2 = []
 
-  def self.shots_fired
-    @@shots_fired
+  def self.shots_fired_board1
+    @@shots_fired_board1
+  end
+
+  def self.shots_fired_board2
+    @@shots_fired_board2
   end
 
   def initialize(shot, board1, board2)
@@ -22,7 +27,7 @@ class Turn
   end
 
   def random_shot
-    (@board1.cells.keys - @@shots_fired).sample
+    (@board1.cells.keys - @@shots_fired_board1).sample
   end
 
   def computer_shot
@@ -30,37 +35,37 @@ class Turn
     # Computer does not fire on the same spot twice - done
     target = random_shot
     @board1.cells[target].fire_upon
-    @@shots_fired << target
+    @@shots_fired_board1 << target
     target
   end
 
   def valid_target?(target)
+    if @board2.cells[target].fired_upon?
+      puts 'you already shot there.'
+      return false
+    end
     @board2.valid_coordinate?(target)
   end
 
   def user_shot
-    # User can choose a valid coordinate to fire on
+    # User can choose a valid coordinate to fire on - done
     print 'enter target: '
     target = gets.chomp
-    if valid_target?(target)
-      puts 'target acquired'
-    else
+
+    # here
+
+    unless valid_target?(target)
       puts 'invalid target'
       user_shot
     end
-    # Entering invalid coordinate prompts user to enter valid coordinate
-    # User is informed when they have already fired on a coordinate
+
+    @board2.cells[target].fire_upon && @@shots_fired_board2 << target
+
+    # Entering invalid coordinate prompts user to enter valid coordinate - done
+    # User is informed when they have already fired on a coordinate - done
   end
 
   def damage_report
-    all_targets = board1.place(p1s1, %w[A1 A2 A3])
-    board1.place(p1s2, %w[B1 B2])
-    board2.place(p2s1, %w[A1 A2 A3])
-    board2.place(p2s2, %w[D1 D2])
-
-    turn = Turn.new('A1', board1, board2)
-    turn.take_turn
-
     # Both computer and player shots are reported as a hit, sink, or miss
     # Board is updated after a turn
   end
