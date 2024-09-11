@@ -1,10 +1,40 @@
 class Game 
-    attr_accessor :turns, :player_board, :computer_board
+    attr_accessor :turns, :player_board, :computer_board, :cells
     def initialize
-        @turns = []
         @cruiser = Ship.new('Cruiser', 3)
         @submarine = Ship.new('Submarine', 2)
-        turn = Turn.new
+        @c_cruiser = Ship.new('Cruiser', 3)
+        @c_submarine = Ship.new('Submarine', 2)
+        @player_board = Board.new
+        @computer_board = Board.new
+        @turn = Turn.new(@player_board ,@computer_board)
+    end
+
+    def place_ships
+        place_ships_randomly(@c_cruiser)
+        place_ships_randomly(@c_submarine)
+        p "I have laid out my ships on the grid.\n" +
+            "You now need to lay out your two ships.\n" +
+"The Cruiser is three units long and the Submarine is two units long.\n"
+
+        place_player_ships(@cruiser, 3)
+        place_player_ships(@submarine, 2)
+       
+        play_the_game
+    end
+    
+    def place_player_ships(ship, length)
+        loop do
+          puts "Enter the squares for the #{ship.name} (#{length} spaces):"
+          coordinates = gets.chomp.split
+          if @player_board.valid_placement?(ship, coordinates) 
+                @player_board.place(ship, coordinates) 
+                puts "#{ship.name} placed"
+            return
+          else
+            puts "Invalid placement try again"
+          end
+        end
     end
 
     def start
@@ -17,61 +47,51 @@ class Game
         end
     end
         
-    def place_ships
-        place_ships_randomly(@cruiser)
-        place_ships_randomly(@submarine)
-        p "I have laid out my ships on the grid.\n" +
-            "You now need to lay out your two ships.\n" +
-"The Cruiser is three units long and the Submarine is two units long.\n"
-        +{@turns[0].render}
-        Enter the squares for the Cruiser (3 spaces):"
-        @turns[0].board2.place_ship(cruiser, [gets.chomp.split])
-        p "Enter the squares for the Submarine (2 spaces):"
-       until @player_board.place_ship(submarine[gets]) == true 
-        @player_board.place_ship(submarine[gets.chomp.split]) == true
-       else
-       end
-    end
 
     def generate_coordinates(start_coordinate, length, orientation)
         row = start_coordinate[0]
-        col = start_coordinate[1..-1].to_i
+        col = start_coordinate[1..0].to_i
         
         if orientation == :horizontal
           (col...(col + length)).map { |c| "#{row}#{c}" }
         else
           (row.ord...(row.ord + length)).map { |r| "#{r.chr}#{col}" }
         end
-      end
+    end
     
     def place_ships_randomly(ship)
-        turns[0].board2.columns_array = verticle
-        turns[0].board2.rows_array = horizontal(ship)
+        vertical = @computer_board.columns_array 
+        horizontal = @computer_board.rows_array
+            max_attempts = 150 
             attempts = 0
-            max_attempts = 100
+           
           
             while attempts < max_attempts
-              start_row = rows_array.sample
-              start_col = columns_array.sample
+              start_row = @computer_board.rows_array.sample
+              start_col = @computer_board.columns_array.sample
               start_coordinate = "#{start_row}#{start_col}"
           
               orientation = [:horizontal, :vertical].sample
           
               coordinates = generate_coordinates(start_coordinate, ship.length, orientation)
           
-              if valid_placement?(ship, coordinates)
-                place(ship, coordinates)
+              if @computer_board.valid_placement?(ship, coordinates)
+                @computer_board.place(ship, coordinates)
                 return true
               end
               attempts += 1
             end
-            false 
-        end
+
+            false
     end
         
     
-
-    #take a guess from a computer
-
-    #show the board with computer ships hidden
+    def play_the_game
+        @turn.take_turn until
+        (@c_cruiser.sunk? && @c_submarine.sunk?) ||(@cruiser.sunk? && @submarine.sunk?)
+        p "press enter to continue"
+        gets
+        game.start
+    end
+    
 end

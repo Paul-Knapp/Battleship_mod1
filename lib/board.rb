@@ -97,8 +97,14 @@ class Board
       end
   
       coordinates.each do |coordinate|
-        @cells[coordinate].place_ship(ship)
+        cell = @cells[coordinate]
+        if cell.nil?
+          puts "Error: Cell at coordinate #{coordinate} is nil"
+          return false
+        end
+        cell.place_ship(ship)
       end
+      true
     else 
       false
     end

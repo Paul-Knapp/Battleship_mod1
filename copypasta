@@ -1,6 +1,7 @@
 require './lib/turn'
 require './lib/board'
 require './lib/ship'
+require './lib/game'
 
 board1 = Board.new
 board2 = Board.new
