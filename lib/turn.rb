@@ -18,50 +18,61 @@ class Turn
     @turn_number = 0
   end
 
-  def print_boards
+  def print_boards(on_off = false)
     puts 'Player Board:'
     @board1.render(true)
     puts
 
-    # Computer board is displayed showing hits, misses, and sunken ships - done
     puts 'Computer Board:'
-    @board2.render(false)
+    @board2.render(on_off)
     puts
   end
 
   def take_turn
     # system('clear') # Clear the terminal
     @turn_number += 1
-    puts
-    puts '*' * 7 + " turn number: #{@turn_number} " + '*' * 7
-    puts
+    puts "\n" + '*' * 7 + " turn number: #{@turn_number} " + '*' * 7 + "\n"
 
     print_boards
     computer_shot
     user_shot
     result
     print_boards
+    @turn_number
   end
 
   def random_shot
     # Computer does not fire on the same spot twice - done
-    (@board1.cells.keys - @@shots_fired_board1).sample
+    valid_unfired_coordinates = @board1.cells.keys - @@shots_fired_board1
+    valid_unfired_coordinates.sample
   end
 
   def computer_shot
     # Computer chooses a random shot - done
     target = random_shot
 
-    @board1.cells[target].fire_upon && @@shots_fired_board1 << target
+    @board1.cells[target].fire_upon
+    @@shots_fired_board1 << target
+    report = damage_report(@board1, target)
 
     @computer_result = "#{target}: " + damage_report(@board1, target)
   end
 
-  def valid_target?(target)
+  def valid_target_board2?(target) # computer board
     return false unless @board2.valid_coordinate?(target)
 
-    # User is informed when they have already fired on a coordinate - done
+    # Computer is informed when they have already fired on a coordinate - done
     return true unless @board2.cells[target].fired_upon?
+
+    puts 'you already shot there.'
+    false
+  end
+
+  def valid_target_board1?(target) # user board
+    return false unless @board1.valid_coordinate?(target)
+
+    # User is informed when they have already fired on a coordinate - done
+    return true unless @board1.cells[target].fired_upon?
 
     puts 'you already shot there.'
     false
@@ -72,12 +83,13 @@ class Turn
     target = gets.chomp
 
     # User can choose a valid coordinate to fire on - done
-    unless valid_target?(target)
+    unless valid_target_board2?(target)
       puts 'invalid target'
       # Entering invalid coordinate prompts user to enter valid coordinate - done
       return user_shot
     end
 
+    # user will fire on board2 and update @@shots_fired_board2
     @board2.cells[target].fire_upon && @@shots_fired_board2 << target
 
     @user_result = "#{target}: " + damage_report(@board2, target)

@@ -84,6 +84,7 @@ class Game
     false
   end
 
+<<<<<<< HEAD
   def get_coordinates_for_vertical_placement(ship)
     # setup everything we can right here:
     coordinates_remaining = ship.length
@@ -95,16 +96,48 @@ class Game
       row = %w[A B].sample
     elsif coordinates_remaining == 2
       row = %w[A B C].sample
+=======
+        place_player_ships(@cruiser, 3)
+        place_player_ships(@submarine, 2)
+       
+        play_the_game
+    end
+    
+    def place_player_ships(ship, length)
+        loop do
+          puts "Enter the squares for the #{ship.name} (#{length} spaces):"
+          coordinates = gets.chomp.split
+          if @player_board.valid_placement?(ship, coordinates) 
+                @player_board.place(ship, coordinates) 
+                puts "#{ship.name} placed"
+            return
+          else
+            puts "Invalid placement try again"
+          end
+        end
+>>>>>>> 797426c76efb206c6a9371ff0074e13f3c053dc7
     end
 
     # store starting coordinate
     coordinates << "#{row}#{column}"
 
+<<<<<<< HEAD
     # increment row for remaining coordinates
     coordinates_remaining -= 1
     coordinates_remaining.times do
       row = (coordinates.last[0].ord + 1).chr
       coordinates << "#{row}#{column}"
+=======
+    def generate_coordinates(start_coordinate, length, orientation)
+        row = start_coordinate[0]
+        col = start_coordinate[1..0].to_i
+        
+        if orientation == :horizontal
+          (col...(col + length)).map { |c| "#{row}#{c}" }
+        else
+          (row.ord...(row.ord + length)).map { |r| "#{r.chr}#{col}" }
+        end
+>>>>>>> 797426c76efb206c6a9371ff0074e13f3c053dc7
     end
     coordinates # return coordinates array
   end
@@ -121,6 +154,7 @@ class Game
     elsif coordinates_remaining == 2
       column = %w[1 2 3].sample
     end
+<<<<<<< HEAD
 
     # store starting coordinate
     coordinates << "#{row}#{column}"
@@ -130,6 +164,16 @@ class Game
     coordinates_remaining.times do
       column = coordinates.last[1].to_i + 1
       coordinates << "#{row}#{column}"
+=======
+        
+    
+    def play_the_game
+        @turn.take_turn until
+        (@c_cruiser.sunk? && @c_submarine.sunk?) ||(@cruiser.sunk? && @submarine.sunk?)
+        p "press enter to continue"
+        gets
+        return start
+>>>>>>> 797426c76efb206c6a9371ff0074e13f3c053dc7
     end
     coordinates # return coordinates array
   end
