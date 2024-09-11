@@ -37,7 +37,6 @@ class Turn
     computer_shot
     user_shot
     result
-    print_boards
     @turn_number
   end
 
