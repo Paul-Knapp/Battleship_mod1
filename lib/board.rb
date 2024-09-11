@@ -83,10 +83,10 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    if diagonal?(coordinates) || not_consecutive?(ship, coordinates) || incorrect_length?(ship, coordinates) || overlapping_placement?(coordinates)
-      false
-    else
+    if !diagonal?(coordinates) && !not_consecutive?(ship, coordinates) && !incorrect_length?(ship, coordinates) && !overlapping_placement?(coordinates) && valid_coordinate?(coordinates)
       true
+    else
+      false
     end
   end
 
