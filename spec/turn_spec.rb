@@ -65,7 +65,7 @@ RSpec.describe Turn do
     end
 
     it 'returns false for coordinates already fired upon' do
-      @turn.computer_shot # Let the computer fire on a target
+      @turn.computer_shot
       target = Turn.shots_fired_board2.last
       expect(@turn.valid_target_board2?(target)).to be false
     end
@@ -79,14 +79,12 @@ RSpec.describe Turn do
     it 'returns a valid random shot from available shots' do
       available_shots = @board1.cells.keys
 
-      # Firing shots to remove them from available shots
       5.times do
         shot = @turn.random_shot
         expect(available_shots).to include(shot)
         Turn.shots_fired_board1 << shot
       end
 
-      # Check that subsequent calls to random_shot do not include shots already fired
       5.times do
         shot = @turn.random_shot
         expect(Turn.shots_fired_board1).not_to include(shot)

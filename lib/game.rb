@@ -47,108 +47,59 @@ class Game
     end
   end
 
-  def generate_coordinates(start_coordinate, length, orientation)
-    row = start_coordinate[0]
-    col = start_coordinate[1..-1].to_i
-
-    if orientation == :horizontal
-      (col...(col + length)).map { |c| "#{row}#{c}" }
-    else
-      (row.ord...(row.ord + length)).map { |r| "#{r.chr}#{col}" }
-    end
-  end
-
-  def place_ships_randomly(ship)
-    vertical = @computer_board.columns_array
-    horizontal = @computer_board.rows_array
-    # changed from 150 to 10 for debugging
-    max_attempts = 10
-    attempts = 0
-
-    while attempts < max_attempts
-      start_row = @computer_board.rows_array.sample
-      start_col = @computer_board.columns_array.sample
-      start_coordinate = "#{start_row}#{start_col}"
-
-      orientation = %i[horizontal vertical].sample
-
-      coordinates = generate_coordinates(start_coordinate, ship.length, orientation)
-
-      if @computer_board.valid_placement?(ship, coordinates)
-        @computer_board.place(ship, coordinates)
-        return true
-      end
-      attempts += 1
-    end
-
-    false
-  end
-
   def get_coordinates_for_vertical_placement(ship)
-    # setup everything we can right here:
     coordinates_remaining = ship.length
     coordinates = []
     column = %w[1 2 3 4].sample
 
-    # set start row and determine remaining coordinates
     if coordinates_remaining == 3
       row = %w[A B].sample
     elsif coordinates_remaining == 2
       row = %w[A B C].sample
     end
 
-    # store starting coordinate
     coordinates << "#{row}#{column}"
 
-    # increment row for remaining coordinates
     coordinates_remaining -= 1
     coordinates_remaining.times do
       row = (coordinates.last[0].ord + 1).chr
       coordinates << "#{row}#{column}"
     end
 
-    coordinates # return coordinates array
+    coordinates
   end
 
   def get_coordinates_for_horizontal_placement(ship)
-    # setup
     coordinates_remaining = ship.length
     coordinates = []
     row = %w[A B C D].sample
 
-    # set start row and determine remaining coordinates
     if coordinates_remaining == 3
       column = %w[1 2].sample
     elsif coordinates_remaining == 2
       column = %w[1 2 3].sample
     end
 
-    # store starting coordinate
     coordinates << "#{row}#{column}"
 
-    # increment column for remaining coordinates
     coordinates_remaining -= 1
     coordinates_remaining.times do
       column = coordinates.last[1].to_i + 1
       coordinates << "#{row}#{column}"
     end
 
-    coordinates # return coordinates array
+    coordinates
   end
 
   def place_ships_randomly_computer_board(ship)
-    # setup
     orientation = %w[vertical horizontal].sample
-    puts orientation
 
     if orientation == 'vertical'
       coordinates = get_coordinates_for_vertical_placement(ship)
     elsif orientation == 'horizontal'
       coordinates = get_coordinates_for_horizontal_placement(ship)
     end
-    puts coordinates
-
-    # TODO: need to place ship
+    
     return place_ships_randomly_computer_board(ship) until @computer_board.valid_placement?(ship, coordinates)
     @computer_board.place(ship, coordinates)
   end
@@ -156,6 +107,11 @@ class Game
   def play_the_game
     @turn.take_turn until
     (@c_cruiser.sunk? && @c_submarine.sunk?) || (@cruiser.sunk? && @submarine.sunk?)
+      if @c_cruiser.sunk? && @c_submarine.sunk?
+        puts "You Won!!"
+      elsif @cruiser.sunk? && @submarine.sunk?
+        puts "YOU LOSE!!!!!!!"
+      end
     p 'press enter to continue'
     gets
     start
