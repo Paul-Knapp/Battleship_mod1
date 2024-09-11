@@ -99,7 +99,7 @@ class Game
     elsif orientation == 'horizontal'
       coordinates = get_coordinates_for_horizontal_placement(ship)
     end
-    
+
     return place_ships_randomly_computer_board(ship) until @computer_board.valid_placement?(ship, coordinates)
     @computer_board.place(ship, coordinates)
   end
@@ -107,13 +107,13 @@ class Game
   def play_the_game
     @turn.take_turn until
     (@c_cruiser.sunk? && @c_submarine.sunk?) || (@cruiser.sunk? && @submarine.sunk?)
-      if @c_cruiser.sunk? && @c_submarine.sunk?
-        puts "You Won!!"
-      elsif @cruiser.sunk? && @submarine.sunk?
-        puts "YOU LOSE!!!!!!!"
-      end
+    if @c_cruiser.sunk? && @c_submarine.sunk?
+      puts 'You Won!!'
+    elsif @cruiser.sunk? && @submarine.sunk?
+      puts 'YOU LOSE!!!!!!!'
+    end
     p 'press enter to continue'
     gets
-    start
+    # start
   end
 end
