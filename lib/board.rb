@@ -20,12 +20,8 @@ class Board
 
   def valid_coordinate?(*input_coordinates)
     input_coordinates.flatten.all? do |coordinate|
-       if @cells.keys.include?(coordinate) == true
-        true
-       else
-        false
-       end
-      end
+      @cells.keys.include?(coordinate) == true
+    end
   end
 
   def get_columns(coordinates)
@@ -83,7 +79,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    if diagonal?(coordinates) || not_consecutive?(ship, coordinates) || incorrect_length?(ship, coordinates) || overlapping_placement?(coordinates)
+    if diagonal?(coordinates) || not_consecutive?(ship,
+                                                  coordinates) || incorrect_length?(ship,
+                                                                                    coordinates) || overlapping_placement?(coordinates)
       false
     else
       true
@@ -91,15 +89,15 @@ class Board
   end
 
   def place(ship, coordinates)
-    if valid_placement?(ship, coordinates) == true
+    if valid_placement?(ship, coordinates)
       coordinates.each do |coordinate|
         @occupied_coordinates << coordinate
       end
-  
+
       coordinates.each do |coordinate|
         @cells[coordinate].place_ship(ship)
       end
-    else 
+    else
       false
     end
   end
