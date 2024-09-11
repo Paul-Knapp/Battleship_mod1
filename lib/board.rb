@@ -79,15 +79,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-<<<<<<< HEAD
-    if diagonal?(coordinates) || not_consecutive?(ship,
-                                                  coordinates) || incorrect_length?(ship,
-                                                                                    coordinates) || overlapping_placement?(coordinates)
-      false
-    else
-=======
-    if !diagonal?(coordinates) && !not_consecutive?(ship, coordinates) && !incorrect_length?(ship, coordinates) && !overlapping_placement?(coordinates) && valid_coordinate?(coordinates)
->>>>>>> 797426c76efb206c6a9371ff0074e13f3c053dc7
+    if !diagonal?(coordinates) && !not_consecutive?(ship,
+                                                    coordinates) && !incorrect_length?(ship,
+                                                                                       coordinates) && !overlapping_placement?(coordinates) && valid_coordinate?(coordinates)
       true
     else
       false
@@ -108,12 +102,7 @@ class Board
         end
         cell.place_ship(ship)
       end
-<<<<<<< HEAD
     else
-=======
-      true
-    else 
->>>>>>> 797426c76efb206c6a9371ff0074e13f3c053dc7
       false
     end
   end
