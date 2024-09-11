@@ -16,8 +16,8 @@ class Game
     place_ships_randomly_computer_board(@c_cruiser)
     place_ships_randomly_computer_board(@c_submarine)
     puts "I have laid out my ships on the grid.\n" +
-      "You now need to lay out your two ships.\n" +
-      "The Cruiser is three units long and the Submarine is two units long.\n"
+         "You now need to lay out your two ships.\n" +
+         "The Cruiser is three units long and the Submarine is two units long.\n"
 
     place_player_ship(@cruiser, 3)
     place_player_ship(@submarine, 2)
@@ -40,16 +40,16 @@ class Game
     # puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit."
     # input = gets.chomp.downcase
     input = 'x'
-    until input == 'p' || input == 'q'
+    until %w[p q].include?(input)
       puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit."
       input = gets.chomp.downcase
-        if input == 'p'
-          place_ships
-          play_the_game
-        elsif input == 'q'
-          p 'Too bad'
-          break
-        end
+      if input == 'p'
+        place_ships
+        play_the_game
+      elsif input == 'q'
+        p 'Too bad'
+        break
+      end
     end
   end
 
@@ -113,6 +113,7 @@ class Game
   def play_the_game
     @turn.take_turn until
     (@c_cruiser.sunk? && @c_submarine.sunk?) || (@cruiser.sunk? && @submarine.sunk?)
+    @turn.print_boards
     if @c_cruiser.sunk? && @c_submarine.sunk?
       puts 'You Won!!'
     elsif @cruiser.sunk? && @submarine.sunk?
