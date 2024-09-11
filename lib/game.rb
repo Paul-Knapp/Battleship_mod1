@@ -91,7 +91,7 @@ class Game
         (@c_cruiser.sunk? && @c_submarine.sunk?) ||(@cruiser.sunk? && @submarine.sunk?)
         p "press enter to continue"
         gets
-        game.start
+        return start
     end
     
 end
