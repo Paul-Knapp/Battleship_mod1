@@ -41,6 +41,7 @@ class Game
     input = gets.chomp.downcase
     if input == 'p'
       place_ships
+      play_the_game
     elsif input == 'q'
       p 'Too bad'
     end
@@ -158,4 +159,3 @@ class Game
     start
   end
 end
-
