@@ -83,7 +83,7 @@ class Turn
     target = gets.chomp
 
     # User can choose a valid coordinate to fire on - done
-    unless valid_target_board1?(target)
+    unless valid_target_board2?(target)
       puts 'invalid target'
       # Entering invalid coordinate prompts user to enter valid coordinate - done
       return user_shot
