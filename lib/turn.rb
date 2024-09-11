@@ -1,5 +1,6 @@
 class Turn
   attr_reader :shot, :board, :user_result, :computer_result
+  attr_writer :shots_fired_board1, :shots_fired_board2
 
   @@shots_fired_board1 = []
   @@shots_fired_board2 = []
@@ -81,7 +82,7 @@ class Turn
       puts 'invalid target'
       return user_shot
     end
-    
+
     @board2.cells[target].fire_upon && @@shots_fired_board2 << target
 
     @user_result = "#{target}: " + damage_report(@board2, target)
