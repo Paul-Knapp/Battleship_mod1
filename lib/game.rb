@@ -17,18 +17,19 @@ class Game
             "You now need to lay out your two ships.\n" +
 "The Cruiser is three units long and the Submarine is two units long.\n"
 
-        place_player_ships('Cruiser', 3)
-        place_player_ships('Submarine', 2)
+        place_player_ships(@cruiser, 3)
+        place_player_ships(@submarine, 2)
        
         play_the_game
     end
     
-    def place_player_ship(ship, length)
+    def place_player_ships(ship, length)
         loop do
           puts "Enter the squares for the #{ship.name} (#{length} spaces):"
           coordinates = gets.chomp.split
-          if @player_board.place(ship, coordinates)
-            puts "#{ship.name} placed"
+          if @player_board.valid_placement?(ship, coordinates) 
+                @player_board.place(ship, coordinates) 
+                puts "#{ship.name} placed"
             return
           else
             puts "Invalid placement try again"
@@ -49,7 +50,7 @@ class Game
 
     def generate_coordinates(start_coordinate, length, orientation)
         row = start_coordinate[0]
-        col = start_coordinate[1..-1].to_i
+        col = start_coordinate[1..0].to_i
         
         if orientation == :horizontal
           (col...(col + length)).map { |c| "#{row}#{c}" }
