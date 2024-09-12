@@ -1,17 +1,5 @@
 require 'pry'
 class Game
-  attr_accessor :turns, :player_board, :computer_board, :cells
-
-  def initialize
-    @cruiser = Ship.new('Cruiser', 3)
-    @submarine = Ship.new('Submarine', 2)
-    @c_cruiser = Ship.new('Cruiser', 3)
-    @c_submarine = Ship.new('Submarine', 2)
-    @player_board = Board.new
-    @computer_board = Board.new
-    @turn = Turn.new(@player_board, @computer_board)
-  end
-
   def place_ships
     place_ships_randomly_computer_board(@c_cruiser)
     place_ships_randomly_computer_board(@c_submarine)
@@ -27,7 +15,7 @@ class Game
     loop do
       puts "Enter the squares for the #{ship.name} (#{length} spaces):"
       coordinates = gets.chomp.split
-      if @player_board.place(ship, coordinates)
+      if @player_board.place(ship, coordinates) && coordinates.length == 3
         puts "#{ship.name} placed"
         return
       else
@@ -37,39 +25,34 @@ class Game
   end
 
   def start
-    # puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit."
-    # input = gets.chomp.downcase
-    input = 'x'
-    until %w[p q].include?(input)
-      puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit."
-      input = gets.chomp.downcase
-      if input == 'p'
-        place_ships
-        play_the_game
-      elsif input == 'q'
-        p 'Too bad'
-        break
-      end
-    end
+    @cruiser = Ship.new('Cruiser', 3)
+    @submarine = Ship.new('Submarine', 2)
+    @c_cruiser = Ship.new('Cruiser', 3)
+    @c_submarine = Ship.new('Submarine', 2)
+    @player_board = Board.new
+    @computer_board = Board.new
+    @turn = Turn.new(@player_board, @computer_board)
+    puts "Welcome to BATTLESHIP\nEnter p to play. Enter q to quit."
+    return unless gets.chomp.downcase == 'p'
+
+    place_ships
+    play_the_game
   end
 
   def get_coordinates_for_vertical_placement(ship)
-    coordinates_remaining = ship.length
     coordinates = []
     column = %w[1 2 3 4].sample
 
-    if coordinates_remaining == 3
+    if ship.length == 3
       row = %w[A B].sample
-    elsif coordinates_remaining == 2
+    elsif ship.length == 2
       row = %w[A B C].sample
     end
 
     coordinates << "#{row}#{column}"
 
-    coordinates_remaining -= 1
-    coordinates_remaining.times do
-      row = (coordinates.last[0].ord + 1).chr
-      coordinates << "#{row}#{column}"
+    (ship.length - 1).times do
+      coordinates << "#{coordinates.last[0].ord}#{column}"
     end
 
     coordinates
